@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Exercise 29/">
+    <Project Path="TheBeam/TheBeam.csproj" Id="220ac1af-39bf-40c5-8439-b8ca903afcf3" />
+  </Folder>
+  <Folder Name="/Exercise 37/">
+    <Project Path="Chess/Chess.csproj" Id="d6ff5fbe-b11d-40c0-922a-07aa51a1f1dc" />
+  </Folder>
+</Solution>
