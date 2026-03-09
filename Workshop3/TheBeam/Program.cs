@@ -5,7 +5,8 @@ class Program
     static void Main()
     {
         Console.Write("Ingrese la viga: ");
-        string viga = Console.ReadLine();
+        string? viga = Console.ReadLine();
+
 
         char baseViga = viga[0];
 

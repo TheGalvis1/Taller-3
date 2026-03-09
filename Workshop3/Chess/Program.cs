@@ -6,61 +6,50 @@ class Program
     static void Main()
     {
         Console.Write("Ingrese ubicación de los caballos: ");
-        string entrada = Console.ReadLine();
+        string input = Console.ReadLine().ToUpper();
 
-        string[] caballos = entrada.Split(',');
+        string[] posiciones = input.Split(',');
 
-        Dictionary<string, (int x, int y)> posiciones = new Dictionary<string, (int, int)>();
+        Dictionary<string, (int x, int y)> caballos = new Dictionary<string, (int, int)>();
 
-        foreach (string c in caballos)
+        foreach (var pos in posiciones)
         {
-            int x = char.ToUpper(c[0]) - 'A';
-            int y = int.Parse(c[1].ToString()) - 1;
-
-            posiciones[c.ToUpper()] = (x, y);
+            int x = pos[0] - 'A';        
+            int y = int.Parse(pos[1].ToString()) - 1; 
+            caballos[pos] = (x, y);
         }
 
-        int[][] movimientos = new int[][]
+        int[,] movimientos =
         {
-            new int[] {2,1},
-            new int[] {2,-1},
-            new int[] {-2,1},
-            new int[] {-2,-1},
-            new int[] {1,2},
-            new int[] {1,-2},
-            new int[] {-1,2},
-            new int[] {-1,-2}
+            {2,1},{2,-1},{-2,1},{-2,-1},
+            {1,2},{1,-2},{-1,2},{-1,-2}
         };
 
-        foreach (var caballo in posiciones)
+        foreach (var caballo in caballos)
         {
             List<string> conflictos = new List<string>();
 
-            foreach (var otro in posiciones)
+            foreach (var otro in caballos)
             {
                 if (caballo.Key == otro.Key)
                     continue;
 
-                foreach (var m in movimientos)
-                {
-                    int nx = caballo.Value.x + m[0];
-                    int ny = caballo.Value.y + m[1];
+                int dx = otro.Value.x - caballo.Value.x;
+                int dy = otro.Value.y - caballo.Value.y;
 
-                    if (nx == otro.Value.x && ny == otro.Value.y)
+                for (int i = 0; i < movimientos.GetLength(0); i++)
+                {
+                    if (dx == movimientos[i, 0] && dy == movimientos[i, 1])
                     {
                         conflictos.Add(otro.Key);
                     }
                 }
             }
 
-            if (conflictos.Count == 0)
-            {
-                Console.WriteLine($"Analizando Caballo en {caballo.Key} => Conflicto con ninguno");
-            }
-            else
-            {
+            if (conflictos.Count > 0)
                 Console.WriteLine($"Analizando Caballo en {caballo.Key} => Conflicto con {string.Join(", ", conflictos)}");
-            }
+            else
+                Console.WriteLine($"Analizando Caballo en {caballo.Key} => Conflicto con ninguno");
         }
     }
 }
