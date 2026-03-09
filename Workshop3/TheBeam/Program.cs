@@ -4,60 +4,69 @@ class Program
 {
     static void Main()
     {
-        Console.Write("Ingrese la viga: ");
-        string? viga = Console.ReadLine();
-
-
-        char baseViga = viga[0];
-
-        int resistencia = 0;
-
-        switch (baseViga)
+        while (true)
         {
-            case '%': resistencia = 10; break;
-            case '&': resistencia = 30; break;
-            case '#': resistencia = 90; break;
-            default:
-                Console.WriteLine("Base inválida");
-                return;
-        }
+            Console.Write("Ingrese la viga: ");
+            string viga = Console.ReadLine();
 
-        int pesoTotal = 0;
-        int secuenciaLargueros = 0;
-        int conexionesSeguidas = 0;
+            char baseViga = viga[0];
 
-        for (int i = 1; i < viga.Length; i++)
-        {
-            char c = viga[i];
+            int resistencia = 0;
 
-            if (c == '=')
+            switch (baseViga)
             {
-                secuenciaLargueros++;
-                conexionesSeguidas = 0;
-                pesoTotal += secuenciaLargueros;
+                case '%': resistencia = 10; break;
+                case '&': resistencia = 30; break;
+                case '#': resistencia = 90; break;
+                default:
+                    Console.WriteLine("Base inválida");
+                    continue;
             }
-            else if (c == '*')
+
+            int pesoTotal = 0;
+            int conexionesSeguidas = 0;
+            bool malConstruida = false;
+
+            for (int i = 1; i < viga.Length; i++)
             {
-                conexionesSeguidas++;
+                char c = viga[i];
 
-                if (conexionesSeguidas > 2)
+                if (c == '=')
                 {
-                    Console.WriteLine("La viga está mal construida!");
-                    return;
+                    pesoTotal += 1;
+                    conexionesSeguidas = 0;
                 }
+                else if (c == '*')
+                {
+                    conexionesSeguidas++;
 
-                pesoTotal += secuenciaLargueros * 2;
+                    if (conexionesSeguidas > 2)
+                    {
+                        malConstruida = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    malConstruida = true;
+                    break;
+                }
+            }
+
+            if (malConstruida)
+            {
+                Console.WriteLine("La viga está mal construida!");
+            }
+            else if (pesoTotal <= resistencia)
+            {
+                Console.WriteLine("La viga soporta el peso!");
             }
             else
             {
-                Console.WriteLine("Carácter inválido");
-                return;
+                Console.WriteLine("La viga NO soporta el peso!");
             }
-        }
 
-        if (pesoTotal <= resistencia)
-            Console.WriteLine("La viga soporta el peso!");
-        else
-            Console.WriteLine("La viga NO soporta el peso!");
+            Console.WriteLine();
+        }
     }
 }
